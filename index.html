@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESONANCE | RLC Simulator</title>
+
+    <!-- Preconnect for faster font loading -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+</head>
+<body>
+    <header class="intro">
+        <div class="title-row">
+            <svg class="sine-wave left" viewBox="0 0 800 80" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 40 Q10 5 20 40 T40 40 T60 40 T80 40 T100 40 T120 40 T140 40 T160 40 T180 40 T200 40 T220 40 T240 40 T260 40 T280 40 T300 40 T320 40 T340 40 T360 40 T380 40 T400 40 T420 40 T440 40 T460 40 T480 40 T500 40 T520 40 T540 40 T560 40 T580 40 T600 40 T620 40 T640 40 T660 40 T680 40 T700 40 T720 40 T740 40 T760 40 T780 40 T800 40 T820 40 T840 40"/>
+            </svg>
+            
+            <h1>RESONANCE</h1>
+            
+            <svg class="sine-wave right" viewBox="0 0 800 80" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 40 Q10 5 20 40 T40 40 T60 40 T80 40 T100 40 T120 40 T140 40 T160 40 T180 40 T200 40 T220 40 T240 40 T260 40 T280 40 T300 40 T320 40 T340 40 T360 40 T380 40 T400 40 T420 40 T440 40 T460 40 T480 40 T500 40 T520 40 T540 40 T560 40 T580 40 T600 40 T620 40 T640 40 T660 40 T680 40 T700 40 T720 40 T740 40 T760 40 T780 40 T800 40 T820 40 T840 40"/>
+            </svg>
+        </div>
+        <p class="tagline">Explore the science of electrical resonance</p>
+    </header>
+
+    <section class="circuit-section">
+        <h2>SERIES RLC CIRCUIT</h2>
+        <div class="circuit-diagram">
+            <svg viewBox="0 0 800 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+                <!-- Connecting wires -->
+                <g stroke="#292824" stroke-width="2.5" fill="none">
+                    <path d="M100 65 V45 H210"/>
+                    <path d="M310 45 H360"/>
+                    <path d="M480 45 H550"/>
+                    <path d="M580 45 H700 V135 H100"/>
+                    <path d="M100 115 V135"/>
+                    
+                    <!-- Resistor -->
+                    <path d="M210 45 L220 30 L235 60 L250 30 L265 60 L280 30 L295 60 L310 45"/>
+                    
+                    <!-- Inductor -->
+                    <path d="M360 45 C360 15, 396 15, 396 45 C396 60, 384 60, 384 45 C384 15, 420 15, 420 45 C420 60, 408 60, 408 45 C408 15, 444 15, 444 45 C444 60, 432 60, 432 45 C432 15, 480 15, 480 45"/>
+                    <!-- Capacitor -->
+                    <path d="M550 25 V65 M580 25 V65"/>
+                    
+                    <!-- AC source -->
+                    <circle cx="100" cy="90" r="25"/>
+                </g>
+                <!-- Source symbol -->
+                <path d="M88 90 Q94 78 100 90 T112 90"
+                      fill="none" stroke="#8B7D68" stroke-width="2.5"/>
+                
+                <!-- Labels -->
+                <g fill="#292824" font-family="Inter" font-size="15" text-anchor="middle">
+                    <text x="260" y="17">R</text>
+                    <text x="420" y="17">L</text>
+                    <text x="565" y="17">C</text>
+                    <text x="55" y="95">V</text>
+                </g>
+            </svg>
+        </div>
+    </section>
+
+    <main class="simulator">
+        <section class="input-panel">
+            <h2>Circuit Parameters</h2>
+
+            <label for="resistance">Resistance (R)</label>
+            <input type="number" id="resistance" inputmode="decimal" step="any" placeholder="Enter Resistance in Ω">
+
+            <label for="inductance">Inductance (L)</label>
+            <input type="number" id="inductance" inputmode="decimal" step="any" placeholder="Enter inductance in H">
+
+            <label for="capacitance">Capacitance (C)</label>
+            <input type="number" id="capacitance" inputmode="decimal" step="any" placeholder="Enter capacitance in μF">
+
+            <label for="voltage">Supply Voltage (V)</label>
+            <input type="number" id="voltage" inputmode="decimal" step="any" placeholder="Enter voltage in V">
+            
+            <label for="frequency">Frequency (f)</label>
+            <input type="number" id="frequency" inputmode="decimal" step="any" placeholder="Enter frequency in Hz">
+
+            <button id="calculate-btn" type="button">Calculate</button>
+        </section>
+
+        <section class="graph-panel">
+            <h2>Current vs Frequency</h2>
+
+            <div id="graph-container">
+                <p id="graph-placeholder">
+                    Enter circuit parameters and click Calculate to view the graph.
+                </p>
+                <canvas id="currentChart" ></canvas>
+            </div>
+
+            <div class="results-section">
+                <h2>Circuit Results</h2>
+
+                <div class="result-grid">
+                    <div class="result-card">
+                        <p>Impedance</p>
+                        <h3 id="impedence-result">--Ω</h3>
+                    </div>
+
+                    <div class="result-card">
+                        <p>Circuit Current</p>
+                        <h3 id="current-result">--A</h3>
+                    </div>
+
+                    <div class="result-card">
+                        <p>Phase Angle</p>
+                        <h3 id="phase-result">--°</h3>
+                    </div>
+
+                    <div class="result-card">
+                        <p>Power Factor</p>
+                        <h3 id="pf-result">--</h3>
+                    </div>
+
+                    <div class="result-card">
+                        <p>Power Consumed</p>
+                        <h3 id="power-result">--W</h3>
+                    </div>
+
+                    <div class="result-card">
+                        <p>Resonant Frequency</p>
+                        <h3 id="resonance-result">--Hz</h3>
+                    </div>
+
+                    <div class="result-card">
+                        <p>Q-Factor</p>
+                        <h3 id="q-result">--</h3>
+                    </div>
+
+                    <div class="result-card">
+                        <p>Resonance Status</p>
+                        <h3 id="resonance-status">Awaiting Input</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <section class="phasor-section">
+        <h2>PHASOR DIAGRAM</h2>
+        <div class="phasor-diagram">
+            <svg viewBox="0 0 600 350" width="100%" xmlns="http://www.w3.org/2000/svg">
+
+                <defs>
+                    <marker id="arrow" markerWidth="8" markerHeight="8"
+                            refX="5" refY="3" orient="auto">
+                        <path d="M0 0 L6 3 L0 6 Z" fill="#292824"/>
+                    </marker>
+                </defs>
+                <!-- Horizontal reference axis -->
+                <line x1="80" y1="175" x2="520" y2="175"
+                      stroke="#B8AE9E" stroke-width="1.5"/>
+                <!-- Vertical axis -->
+                <line x1="300" y1="40" x2="300" y2="310"
+                      stroke="#B8AE9E" stroke-width="1.5"/>
+                <!-- VR: horizontal voltage -->
+                <line id="vr-vector" x1="300" y1="175" x2="440" y2="175"
+                      stroke="#8B7D68" stroke-width="3" marker-end="url(#arrow)"/>
+
+                <!-- VL: upward voltage -->
+                <line id="vl-vector" x1="440" y1="175" x2="440" y2="65"
+                    stroke="#4D83A8" stroke-width="3" marker-end="url(#arrow)"/>
+
+                <!-- VC: downward voltage -->
+                <line id="vc-vector" x1="440" y1="175" x2="440" y2="265"
+                      stroke="#B87979" stroke-width="3" marker-end="url(#arrow)"/>
+
+                <!-- Resultant voltage -->
+                <line id="v-vector" x1="300" y1="175" x2="440" y2="65"
+                      stroke="#292824" stroke-width="2.5"
+                      stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+                
+                <path id="phase-arc"
+                      d="M 340 175 A 40 40 0 0 0 338 160"
+                      fill="none"
+                      stroke="#B87979"
+                      stroke-width="3"/>
+
+                <!-- Labels -->
+                <g font-family="Inter" font-size="12" fill="#292824">
+                    <text id="vr-label" x="370" y="195">VR</text>
+                    <text id="vl-label" x="455" y="70">VL</text>
+                    <text id="vc-label" x="455" y="270">VC</text>
+                    <text id="v-label" x="355" y="105">V</text>
+                    <text id="phase-label" x="340" y="155"
+                        text-anchor="middle">φ</text>
+                </g>
+
+            </svg>
+
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>
